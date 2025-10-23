@@ -16,4 +16,4 @@ ARG API_PORT=6789
 EXPOSE ${API_PORT}
 
 # Define the command to run the application
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "${API_PORT}"]
+CMD ["sh", "-c", "uvicorn main:app --host 0.0.0.0 --port ${API_PORT:-6789}"]
