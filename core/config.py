@@ -18,11 +18,7 @@ class Settings:
         self.API_VERSION = "1.0.0"
 
         # Get working directory from command line or default
-        self.WORKING_DIR = (
-            os.path.abspath(sys.argv[1])
-            if len(sys.argv) > 1
-            else "C:/Users/HP/Desktop/FORGRIDE/CODE/MVP"
-        )
+        self.WORKING_DIR = os.getenv("APP_WORKING_DIR", "/app")
 
         # HTTP Configuration
         self.HTTP_TIMEOUT = 30.0

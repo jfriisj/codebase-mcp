@@ -85,11 +85,13 @@ def create_app() -> FastAPI:
 app = create_app()
 
 
+import os
+
 def main():
     """Main entry point for running the server"""
     parser = argparse.ArgumentParser(description="FastAPI Codebase Manager Server")
-    parser.add_argument("--host", default="127.0.0.1", help="Host to bind to")
-    parser.add_argument("--port", type=int, default=6789, help="Port to bind to")
+    parser.add_argument("--host", default=os.getenv("API_HOST", "127.0.0.1"), help="Host to bind to")
+    parser.add_argument("--port", type=int, default=int(os.getenv("API_PORT", 6789)), help="Port to bind to")
     parser.add_argument("--reload", action="store_true", help="Enable auto-reload")
     parser.add_argument("working_dir", nargs="?", help="Working directory path")
 

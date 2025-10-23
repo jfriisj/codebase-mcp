@@ -1,0 +1,6 @@
+{
+  "FASTAPI_BASE_URL": "http://web:6789",
+  "HTTP_TIMEOUT": 30.0,
+  "MCP_SERVER_PORT": 6790,
+  "MCP_SERVER_NAME": "Codebase Manager MCP Server"
+}

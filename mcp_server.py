@@ -13,14 +13,29 @@ from mcp.server.fastmcp import FastMCP
 import logging
 from prompts.general_dev_prompt import GENERAL_DEV_PROMPT
 
+import os
+
 logger = logging.getLogger(__name__)
 
+# Default configuration
+config = {
+    "FASTAPI_BASE_URL": "http://localhost:6789",
+    "HTTP_TIMEOUT": 30.0,
+    "MCP_SERVER_PORT": 6789,
+    "MCP_SERVER_NAME": "Codebase Manager MCP Server"
+}
+
+# Load configuration from mcp.json if it exists
+if os.path.exists("mcp.json"):
+    with open("mcp.json", "r") as f:
+        config.update(json.load(f))
+
 # FastAPI server configuration
-FASTAPI_BASE_URL = "http://localhost:6789"
-HTTP_TIMEOUT = 30.0
+FASTAPI_BASE_URL = config["FASTAPI_BASE_URL"]
+HTTP_TIMEOUT = config["HTTP_TIMEOUT"]
 
 # Initialize MCP server
-mcp = FastMCP("Codebase Manager MCP Server",port=6789)
+mcp = FastMCP(config["MCP_SERVER_NAME"], port=config["MCP_SERVER_PORT"])
 
 # HTTP client for making requests to FastAPI
 http_client: Optional[httpx.AsyncClient] = None

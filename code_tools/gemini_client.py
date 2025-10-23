@@ -10,7 +10,7 @@ from dataclasses import dataclass
 import logging
 import os
 from dotenv import load_dotenv
-from google import genai
+import google.generativeai as genai
 import re
 load_dotenv()
 
@@ -50,9 +50,9 @@ class GeminiClient:
         Args:
             api_key: Gemini API key (if None, will use environment variable)
         """
-        self.client = genai.Client(api_key=api_key or os.getenv("GEMINI_API_KEY"))
+        genai.configure(api_key=api_key or os.getenv("GEMINI_API_KEY"))
         self.rate_limit = RateLimit()
-        self.model = "gemini-2.5-flash"
+        self.model = genai.GenerativeModel(os.getenv("GEMINI_MODEL", "gemini-1.5-flash"))
 
         # Statistics
         self.total_requests = 0
@@ -165,9 +165,7 @@ class GeminiClient:
         await self._wait_for_rate_limit(int(estimated_tokens))
 
         try:
-            response = self.client.models.generate_content(
-                model=self.model, contents=prompt
-            )
+            response = self.model.generate_content(contents=prompt)
 
             # Record successful request
             actual_tokens = response.usage_metadata.total_token_count if response.usage_metadata else 0
